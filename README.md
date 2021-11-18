@@ -14,4 +14,4 @@ There are three key takeaways that this repository is hoping to showcase:
 * The `data` folder contains the `.csv` simulated data.
 * The `report` folder contains all the figures, tables, and `.Rmd` report file, compiling them together into a final PDF.
 * The `simulation` folder contains a `.R` script that creates the simulated data used in the analysis.
-* The `renv` folder and related files ought not to be modified and are included for replicability purposes. To see how `renv` works check out [https://rstudio.github.io/renv/articles/renv.html](Introduction to renv).
+* The `renv` folder and related files ought not to be modified and are included for replicability purposes. To see how `renv` works check out [Introduction to renv](https://rstudio.github.io/renv/articles/renv.html).
