@@ -1,0 +1,37 @@
+---
+title: "A Fancy Regression"
+author: "Adam Kaplan"
+date: "11/19/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(here)
+library(readr)
+here::i_am("report/report.Rmd")
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data creation
+
+I created the data using the following code:
+```{r create-data, eval = FALSE, code = readr::read_lines(here("simulation/create-data.R"), skip = 10, n_max = 5)}
+```
+
+## Results
+
+Here is my fancy table:
+\input{`r here("report/tables/regression.tex")`}
+
+And here is the super fancy plot:
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=\textwidth]{`r here("report/figures/regression.png")`}
+\end{figure}
+
+And here is the even fancier ggplot:
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=\textwidth]{`r here("report/figures/regression_ggplot.png")`}
+\end{figure}
