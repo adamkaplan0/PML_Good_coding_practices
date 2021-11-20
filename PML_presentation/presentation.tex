@@ -1,0 +1,251 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+\documentclass[aspectratio=169,xcolor=dvipsnames]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+%%%% ---- Text, Presentation, and Packages ----
+%%%%
+% Beamer theme
+\usetheme{CambridgeUS}
+\usecolortheme{beaver}
+\setbeamertemplate{navigation symbols}{}
+% Uncomment this to show highlighted table of contents before each section
+\AtBeginSection[]{
+  \begin{frame}
+    \frametitle{Table of Contents}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+% text encoding
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage[english]{babel}
+% Math and code
+\usepackage{mathtools,amssymb,amsfonts,bm,dsfont,verbatim,listings,alltt}
+% Misc
+\usepackage{hyperref,placeins,graphicx,subcaption,float,booktabs,multirow,color,xcolor}
+
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+% The title
+\title[]{``Good'' Coding Practices for Social Scientists}
+\subtitle{A quick and dirty introduction to writing and debugging clean, reproducible code in R}
+\author[]{\large{Adam Kaplan}}
+\institute[]{Massachusetts Institute of Technology}
+\date[]{November 19, 2021}
+
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION SLIDES
+%----------------------------------------------------------------------------------------
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\begin{frame}[noframenumbering, plain]
+    \titlepage
+\end{frame}
+
+\begin{frame}[noframenumbering, plain]{Plan for today}
+		\tableofcontents
+	\end{frame}
+
+
+%------------------------------------------------
+\section{Writing clean code}
+%------------------------------------------------
+
+\begin{frame}[t]{What is clean code?}
+  \begin{itemize}
+    \item Your code should read like a recipe for mediocre cooks.\pause
+    \begin{itemize}
+      \item \textbf{Why mediocre?} \pause Some base knowledge is expected, i.e. you do not need to explain what \texttt{x <- 2} means, but do not assume they are deeply familiar with your esoteric choice of packages. \pause
+      \item \textbf{Why recipe?} \pause Your code should be well-organized so that a reader knows what to expect. Maybe at first glance I want to know what is the input (ingredients), output (dish), and what are the steps to get there.
+    \end{itemize}\pause
+    \item Two important aspects that make a recipe good:\pause
+    \begin{enumerate}
+      \item \alert{Annotation and organization:} I know where to find the input, and can understand the instructions even if I have never made the recipe before.\pause
+      \item \alert{Abstraction:} Combine basic instructions into more abstract functions or states. E.g. In my bread-baking book I am told to ``combine the dough using the Pincer method.'' When I look up the Pincer method I get 6 images and accompanying words explaining it. Imagine if the book had to repeat these 6 images and explanations every time.
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[t]{Annotation and Organization: Let's talk mediocrity}
+  \textbf{Annotation:} \pause Variable/Function naming, commenting, abstraction.\pause
+  \begin{itemize}
+    \item Let's tackles these in order.\pause
+    \item \textbf{Variable/Function naming:} \alert{Be consistent}!\pause
+    \begin{itemize}
+      \item I highly suggest reading a \alert{style guide} and following it closely for the best results.\pause
+      \item Even if you deviate, make sure you do so consistently. For instance you prefer \texttt{camelCase} over \text{snake\_case} naming.\pause
+      \item \underline{Style guides:} Tidyverse, Google, ...\pause
+      \item No need to remember all of them $\implies$ \texttt{styler} package.
+    \end{itemize}
+
+  \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[t]{Annotation and Organization: Let's talk mediocrity}
+  \textbf{Annotation:}\pause Variable/Function naming, commenting, abstraction.\pause
+  \begin{itemize}
+    \item \textbf{Abstraction:} \alert{Do not repeat code}, write functions instead.\pause
+    \begin{itemize}
+      \item I would go as far as say if you repeat a code chunk that is longer than 1 line, at least once, write a function.
+      \item If it is a one-line statement, it depends.\pause
+      \item \alert{You still need to apply proper naming and commenting hygiene!} \pause
+    \end{itemize}
+    \item \textbf{Commenting:} From before, we are assuming some base knowledge, so what is this? \pause It depends.\pause
+    \begin{itemize}
+      \item I like to err on the more conservative side, so more comments.\pause
+      \item \underline{The bare minimum is:} For functions \alert{explain input, output, and purpose}; For blocks of code explain purpose and maybe some more esoteric steps within.\pause
+      \item If you followed proper naming strategies, you will not need to comment what your variables represent, but it still might be useful to mention some important information about them, such as why you chose to use a list of \texttt{matrix} objects rather than a \texttt{data.frame}, etc.\pause
+      \item \underline{Key point:} The more you abstract away, and the better your naming, the fewer comments you will need!
+    \end{itemize}
+  \end{itemize}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[t]{Annotation and Organization: Let's talk mediocrity}
+  \textbf{Organization:}\pause Folder and code organization.\pause
+  \begin{itemize}
+    \item \textbf{Code organization:} Just like your paper, \alert{your code will likely have sections, highlight them}.\pause
+    \begin{itemize}
+      \item E.g. your analysis corresponds to different tables, figures, can label them as such in the code.\pause
+      \item Commonly use some type of separators \texttt{\#\#\#\#\#\#} or \texttt{-----------}.\pause
+      \item In RStudio, can use headings directly by commenting \texttt{\# HEADING NAME --------}.
+    \end{itemize}
+    \item \textbf{Folder organization:} Keep paper, presentation, data, data wrangling, analysis, and simulations separate.\pause
+    \begin{itemize}
+      \item Not all projects will include all of these, but try to keep them as separate as possible.\pause
+      \item \underline{Benefits:} Easy to find replication data and sought after code.\pause
+      \item \underline{Costs:} It is painful to work with paths, especially across operating systems. \pause $\implies$ \texttt{here} package.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[t]{Let's check things out in \texttt{R}}
+  \begin{itemize}
+    \item In particular we will go over a sample project and look for:\pause
+    \begin{enumerate}
+      \item Annotation through commenting, variable naming, and using the \texttt{styler} package.\pause\vspace{1em}
+      \item Abstraction through the introduction of functions.\pause\vspace{1em}
+      \item Organization through folder structure, code structure, and the \texttt{here} package.
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+
+%------------------------------------------------
+\section{Quick introduction to debugging}
+%------------------------------------------------
+
+\begin{frame}[t]{The Art of Debugging}
+  \begin{itemize}
+    \item \textbf{Debugging hierarchy:} Unit tests \pause > Breakpoint setting and traceback \pause > Printing intermediary output \pause > Explaining what code does in words (Rubber-ducky debugging) \pause > Giving up.\pause
+    \item Goal is to not give up. \alert{Usually printing intermediary output is effective enough.}\pause
+    \item Unit tests are overkill if you are not coding your own package. Breakpoints and tracing code back is useful, but has a steep learning curve.\pause
+    \item \underline{Some more concrete advice:}\pause
+    \begin{itemize}
+      \item If you followed the advice until now, most of your code will be functions, which makes debugging easier, since you can trace the error to some of those functions.\pause
+      \item \alert{Talking to yourself is a good thing.}\pause
+      \item Note that you can always run each line of a function individually and print the output to see if it matches what you expect.\pause
+      \item \alert{When you code, always debug as you go.} I.e. don't write 50 functions and then start testing your code. Rather do it, a function or two at a time.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+%------------------------------------------------
+\section{Making your project replicable}
+%------------------------------------------------
+
+\begin{frame}[t]{Reproducability is a spectrum}
+  \begin{itemize}
+    \item Today most studies already submit code and data is that not enough? \pause Sometimes and in the short term. \pause
+    \item R tries to be very compatible with past versions, but that is not necessarily the case for other packages. \textbf{Fun Fact:} R 2.1 was released in 2005, R 3.0 in 2013, and R 4.0 in 2020. \pause
+    \item We are in the long-term business, so it might make sense to make sure I can run code from 2013 in 2021 \alert{without running into weird hiccups}.\pause
+    \item \textbf{The reproducability spectrum:} Snapshot of full operating system \pause > Snapshot of R and all R packages \pause > Code and Data \pause > Nothing. \pause
+    \item \texttt{renv}, a hopeful \texttt{packrat} replacement fits in the 2nd best spot and should be good enough for most.
+  \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[t]{Let's check things out in \texttt{R}}
+  \begin{enumerate}
+    \item We will go over how simple \texttt{renv} is to set-up in existing projects.\pause\vspace{1em}
+    \item What does a \texttt{renv} project look like on GitHub for instance.\pause\vspace{1em}
+    \item What's the process of restoring a \texttt{renv} project like.
+  \end{enumerate}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[t]{Thank you so much!}
+  \vspace{3em}
+  \begin{center}
+    \begin{Large}
+      Please feel free to reach out if you have any questions and/or suggestions!
+    \end{Large}
+  \end{center}
+\end{frame}
+\end{document}

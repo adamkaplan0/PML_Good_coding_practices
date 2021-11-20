@@ -1,6 +1,6 @@
 # PML Workshop on "Good" Coding Practices for Social Scientists
 
-This repository is supposed to mimic a research project containing an analysis, simulation, and report written in RMarkdown.
+This repository is supposed to mimic a research project containing an analysis, simulation, and report written in RMarkdown. I also include the presentation slides from the workshop held on 11/19/2021.
 
 ## Purpose
 There are three key takeaways that this repository is hoping to showcase:
@@ -15,3 +15,4 @@ There are three key takeaways that this repository is hoping to showcase:
 * The `report` folder contains all the figures, tables, and `.Rmd` report file, compiling them together into a final PDF.
 * The `simulation` folder contains a `.R` script that creates the simulated data used in the analysis.
 * The `renv` folder and related files ought not to be modified and are included for replicability purposes. To see how `renv` works check out [Introduction to renv](https://rstudio.github.io/renv/articles/renv.html).
+* The `PML_presentation` folder is not part of the example and contains the presentation slides from the workshop.
