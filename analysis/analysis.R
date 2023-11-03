@@ -27,8 +27,8 @@ stargazer::stargazer(regression, out = here("report/tables/regression.tex"))
 ### Base R version ##########
 png(here("report/figures/regression.png"))
 plot(data$x, data$y)
-print(datas$x)
-lines(datas$x, predict(regression), col = "red")
+print(data$x)
+lines(data$x, predict(regression), col = "red")
 dev.off()
 
 ### GGplot version ##########
